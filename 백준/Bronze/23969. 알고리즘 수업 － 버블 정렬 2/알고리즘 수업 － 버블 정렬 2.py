@@ -14,4 +14,5 @@ N, K = map(int, input().split())            # N: 배열 크기, K: 교환 횟수
 arr = list(map(int, input().split()))       # arr: 입력 배열
 
 results = bubble_sort(arr, N, K)
-print(" ".join(map(str, results)))
+for result in results:
+    print(result, end=" ")
