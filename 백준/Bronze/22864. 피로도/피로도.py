@@ -4,9 +4,11 @@ tired = 0
 totalWork = 0
 
 A, B, C, M = map(int, input().split())
+if A > M:
+    print(totalWork)
+    exit()
+
 for i in range(24):
-    if A > M:
-        break
     if tired + A <= M:
         totalWork += B
         tired += A
