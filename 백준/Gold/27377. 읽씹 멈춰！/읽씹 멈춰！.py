@@ -11,8 +11,7 @@ for i in range(T):
         else:
             if (n // 2) * s < t:  # 타이핑이 복붙보다 빠름
                 time += (n // 2) * s
-                n //= 2
             else:                 # 복붙이 타이핑보다 빠름
                 time += t
-                n //= 2
+            n //= 2
     print(time)
