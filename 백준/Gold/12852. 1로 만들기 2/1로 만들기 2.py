@@ -1,32 +1,54 @@
-import sys
-N = int(sys.stdin.readline())
-dp = [0] * (N + 1)
-dp2 = [0] * (N + 1)
+# 1. X가 3으로 나누어 떨어지면, 3으로 나눈다.
+# 2. X가 2로 나누어 떨어지면, 2로 나눈다.
+# 3. 1을 뺀다.
+# 연산을 사용하는 횟수의 최솟값을 출력
 
+N = int(input())
+dp = [-1] * (N+1)
 dp[1] = 0
-dp2[1] = 0
-for i in range(2, N + 1):
-    minLoc = i - 1
-    dp[i] = dp[minLoc] + 1
-    dp2[i] = minLoc
 
-    if i % 2 == 0:
-        minLoc = i - 1 if dp[i - 1] < dp[i // 2] else i // 2
-        dp[i] = dp[minLoc] + 1
-        dp2[i] = minLoc
+prev_num = [-1] * (N+1)
+prev_num[0] = 0
 
-    if i % 3 == 0:
-        minLoc = i - 1 if dp[i - 1] < dp[i // 3] else i // 3
-        dp[i] = dp[minLoc] + 1
-        dp2[i] = minLoc
+for num in range(2, N+1):
+    if num % 2 == 0 and num % 3 == 0:
+        min = dp[num // 2]
+        idx = num // 2
+        if dp[num // 3] < min:
+            min = dp[num // 3]
+            idx = num // 3
+        if dp[num - 1] < min:
+            min = dp[num - 1]
+            idx = num - 1
+        dp[num] = min + 1
+        prev_num[num] = idx
+    else:
+        if num % 2 == 0:
+            min = dp[num // 2]
+            idx = num // 2
+            if dp[num - 1] < min:
+                min = dp[num - 1]
+                idx = num - 1
+            dp[num] = min + 1
+            prev_num[num] = idx
 
-    if i % 2 == 0 and i % 3 == 0:
-        minLoc = i // 2 if dp[i // 2] < dp[i // 3] else i // 3
-        dp[i] = dp[minLoc] + 1
-        dp2[i] = minLoc 
+        if num % 3 == 0:
+            min = dp[num // 3]
+            idx = num // 3
+            if dp[num - 1] < min:
+                min = dp[num - 1]
+                idx = num - 1
+            dp[num] = min + 1
+            prev_num[num] = idx
+
+        if num % 2 != 0 and num % 3 != 0:
+            dp[num] = dp[num - 1] + 1
+            prev_num[num] = num - 1
 
 print(dp[N])
-print(N, end=" ")
-while dp2[N] >= 1:
-    print(dp2[N], end=" ")
-    N = dp2[N]
+
+i = N
+print(i, end=" ")
+while prev_num[i] >= 0:
+    print(prev_num[i], end=" ")
+    i = prev_num[i]
